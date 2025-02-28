@@ -1,0 +1,21 @@
+name: Deploy To iwinv
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  Deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: SSH(원격 접속)로 iwinv 접속
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.IWINV_HOST }}
+          username: ${{ secrets.IWINV_USERNAME }}
+          key: ${{ secrets.IWINV_PRIVATE_KEY }}
+          script_stop: true
+          script: |
+            cd /var/www/html/cicd
+            git pull origin main
